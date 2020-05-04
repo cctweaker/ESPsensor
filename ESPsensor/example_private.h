@@ -12,9 +12,13 @@
 // x6-xx-xx-xx-xx-xx
 // xA-xx-xx-xx-xx-xx
 // xE-xx-xx-xx-xx-xx
-uint8_t gatewayMac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+uint8_t gmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 // using a custom mac will allow you to change the ESP on the gateway without changing the programming on sensors or buttons
 // hardware mac address assigned to the ESP is unchanged, just not used in this case
+
+
+uint8_t smac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEE};  // sensors
+uint8_t bmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEF};  // buttons/switches
 
 
 // pick 16 random numbers to use as key for message encoding
@@ -22,12 +26,12 @@ uint8_t KEY[16] = {0xDE, 0xAD, 0xBE, 0xEF,0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0x
 #define KEYlen 16
 
 
-// TIP will be used as field name in sent json message
+// TIP will be sent json message
 #define TIP "s"         // sensor
 // #define TIP "l"      // light switch
 // #define TIP "g"      // gateway MQTT
 
-// NAME will be used for value for the TIP field in sent json
+// NAME will be sent in json message
 #define NAME "attic"
 // #define NAME "kitchen"
 // #define NAME "gameroom"

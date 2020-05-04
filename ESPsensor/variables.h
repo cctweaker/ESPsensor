@@ -1,24 +1,11 @@
-struct __attribute__((packed)) DataStruct
-{
-    char text[128];
-};
-struct __attribute__((packed)) ReplyStruct
-{
-    uint8_t ack = 55;
-};
+char tx[250];
+uint8_t ack = 55;
 
-DataStruct sendingData;
-ReplyStruct receivedData;
-
-boolean SNS = false;
-boolean SNT = false;
-boolean ACK = false;
+boolean SNS = false; // sensor read flag
+boolean SNT = false; // data sent flag
+boolean ACK = false; // data sent ok flag
 
 #define SLEEP 60 * 1000 * 1000 // 60 seconds
-
-float tmp = 0;
-float hum = 0;
-float bat = 0;
 
 // measure your ESP VCC voltage with a good multimeter
 // should be around 3.30V
@@ -26,5 +13,6 @@ float bat = 0;
 // enter the ESP reported voltage
 // this will fluctuate from ESP to ESP
 // i've seen up to 3.39V reported
-#define REPORTED 2.85
-#define BATTFACTOR 1024 * MEASURED / REPORTED
+#define REPORTED 3.30
+#define FACTOR 1024 * MEASURED / REPORTED
+// use MQTT to send yourself a reminder to change/recharge batteries when voltage drops below 3.0-2.9V

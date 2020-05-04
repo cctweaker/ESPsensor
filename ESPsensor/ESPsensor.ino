@@ -51,23 +51,26 @@ void loop()
 
 void readSensor()
 {
+  float tmp = 0;
+  float hum = 0;
+  float bat = 0;
 
   si7021_env data = sensor.getHumidityAndTemperature();
 
   tmp = (float)data.celsiusHundredths / 100;
   hum = (float)data.humidityBasisPoints / 100;
-  bat = (float)ESP.getVcc() / BATTFACTOR;
+  bat = (float)ESP.getVcc() / FACTOR;
+
+  sprintf(tx, "{\"t\":\"%s\",\"n\":\"%s\",\"tmp\":%.2f,\"hum\":%.2f\",\"bat\":%.2f}", TIP, NAME, tmp, hum, bat);
 
   SNS = true;
 }
 
 void sendData()
 {
-  sprintf(sendingData.text, "{\"t\":\"%s\",\"n\":\"%s\",\"tmp\":%.2f,\"hum\":%.2f\",\"bat\":%.2f}", TIP, NUME, tmp, hum, bat);
-
-  uint8_t byteArray[sizeof(sendingData)];
-  memcpy(byteArray, &sendingData, sizeof(sendingData));
-  esp_now_send(gmac, byteArray, sizeof(sendingData));
+  uint8_t byteArray[sizeof(tx)];
+  memcpy(byteArray, &tx, sizeof(tx));
+  esp_now_send(gmac, byteArray, sizeof(tx));
   SNT = true;
 }
 

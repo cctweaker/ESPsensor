@@ -1,6 +1,6 @@
 # ESPsensor
 is covering a need for low power, cheap, battery operated sensors that you can place throughout your house.
-It is designed to use an ESP8266 and a SI7021 temperature and himidity sensor.
+It is designed to use an ESP8266 and a SI7021 temperature and humidity sensor.
 Communication is done through ESP-Now protocol to save a huge amount of power compared to regular WiFi.
 It needs a <a href="https://github.com/cctweaker/ESPGW-Now">ESP-Now Gateway</a> to receive its output.
 
@@ -23,3 +23,6 @@ Rename example_private.h to private.h and edit to you liking.
 
 # Plans
 - add more sensors types
+
+# Info
+Boards like NodeMCU and WeMos D1 can not measure ADC_VCC (their own voltage) because the ADC pin is connected to a voltage divider. To measure ADC_VCC the ADC pin must be floating!
