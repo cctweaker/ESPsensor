@@ -34,3 +34,12 @@ Roll your own based on the schematics inside hardware folder or get the PCB (wit
 # Deep Sleep Mod
 ESP-01 and ESP-01S do not have GPIO 16 available. To use them for deepsleep a small mod is necessary. GPIO 16 is nicely exposed on the bottom-left side of the ESP8266 chip. All we need to do is bridge it with a wire to RESET pin.
 Pictures are available in the project's hardware folder.
+
+# Message format
+ESPsensor send a message with the following format: <code>{"t":"sensor","n":"attic","ID":"abcdef","tmp":25.12,"hum":41.66","vin":3.30}</code>
+- t: device type. Value can be sensor, switch or anything else you define.
+- n: device name. Value can be room name or any other name you give to the device.
+- ID: ESPid, last 4 bytes of the ESP's mac address.
+- tmp: temperature reading
+- hum: humidity reading
+- vin: ESP voltage. Good until about 2.9V. Best to change batteries when voltage falls below 3.00V

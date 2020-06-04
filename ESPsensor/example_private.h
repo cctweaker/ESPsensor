@@ -29,7 +29,7 @@ uint8_t key[16] = {0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0
 
 // TIP will be sent in json message
 #define TIP "sensor" // sensor
-// #define TIP "light" // light switch
+// #define TIP "switch" // light switch
 // #define TIP "gw"      // gateway MQTT
 
 // NAME will be sent in json message
