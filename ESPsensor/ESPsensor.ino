@@ -22,11 +22,11 @@ void initVariant()
 
 void setup()
 {
-  if (!sensor.begin(0, 2)) // connect SDA to GPIO0 and SCL to GPIO2
-    gotoSleep();
+  if (!sensor.begin(2, 0))
+    goto_sleep();
 
   if (esp_now_init() != 0)
-    gotoSleep();
+    goto_sleep();
 
   esp_now_set_kok(kok, 16);
 
@@ -41,37 +41,37 @@ void setup()
 
 void loop()
 {
-  if (!SNS)
-    readSensor();
-  if (!SNT)
-    sendData();
+  if (!SENT)
+    send_data();
+
   if (ACK)
-    gotoSleep();
+    goto_sleep();
+
+  if (millis() > 1000) // sleep if data not sent in 1 second
+    goto_sleep();
 }
 
-void readSensor()
+void send_data()
 {
+  char tx[128];
+
   float tmp = 0;
   float hum = 0;
-  float bat = 0;
+  float vin = 0;
 
   si7021_env data = sensor.getHumidityAndTemperature();
 
   tmp = (float)data.celsiusHundredths / 100;
   hum = (float)data.humidityBasisPoints / 100;
-  bat = (float)ESP.getVcc() / FACTOR;
+  vin = (float)ESP.getVcc() / FACTOR;
 
-  sprintf(tx, "{\"t\":\"%s\",\"n\":\"%s\",\"tmp\":%.2f,\"hum\":%.2f\",\"bat\":%.2f}", TIP, NAME, tmp, hum, bat);
+  sprintf(tx, "{\"t\":\"%s\",\"n\":\"%s\",\"ID\":\"%x\",\"tmp\":%.2f,\"hum\":%.2f\",\"vin\":%.2f}", TIP, NAME, ESP.getChipId(), tmp, hum, vin);
 
-  SNS = true;
-}
-
-void sendData()
-{
   uint8_t byteArray[sizeof(tx)];
   memcpy(byteArray, &tx, sizeof(tx));
   esp_now_send(gmac, byteArray, sizeof(tx));
-  SNT = true;
+
+  SENT = true;
 }
 
 void txcb(uint8_t *mac, uint8_t sendStatus)
@@ -82,7 +82,7 @@ void txcb(uint8_t *mac, uint8_t sendStatus)
 
 void rxcb(uint8_t *senderMac, uint8_t *incomingData, uint8_t len) {}
 
-void gotoSleep()
+void goto_sleep()
 {
   ESP.deepSleepInstant(SLEEP, RF_NO_CAL);
 }
