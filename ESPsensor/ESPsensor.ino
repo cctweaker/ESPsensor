@@ -22,8 +22,8 @@ void initVariant()
 
 void setup()
 {
-  if (!sensor.begin(2, 0))
-    goto_sleep();
+  if (sensor.begin(2, 0))
+    SI = true;
 
   if (esp_now_init() != 0)
     goto_sleep();
@@ -59,13 +59,16 @@ void send_data()
   float hum = 0;
   float vin = 0;
 
-  si7021_env data = sensor.getHumidityAndTemperature();
+  if (SI)
+  {
+    si7021_env data = sensor.getHumidityAndTemperature();
 
-  tmp = (float)data.celsiusHundredths / 100;
-  hum = (float)data.humidityBasisPoints / 100;
+    tmp = (float)data.celsiusHundredths / 100;
+    hum = (float)data.humidityBasisPoints / 100;
+  }
   vin = (float)ESP.getVcc() / FACTOR;
 
-  sprintf(tx, "{\"t\":\"%s\",\"n\":\"%s\",\"ID\":\"%x\",\"tmp\":%.2f,\"hum\":%.2f\",\"vin\":%.2f}", TIP, NAME, ESP.getChipId(), tmp, hum, vin);
+  sprintf(tx, "{\"t\":\"%s\",\"n\":\"%s\",\"ID\":\"%x\",\"v\":%d,\"tmp\":%.2f,\"hum\":%.2f\",\"vin\":%.2f}", TIP, NAME, ESP.getChipId(), VERSION, tmp, hum, vin);
 
   uint8_t byteArray[sizeof(tx)];
   memcpy(byteArray, &tx, sizeof(tx));
