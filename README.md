@@ -16,14 +16,8 @@ It needs a <a href="https://github.com/cctweaker/ESPGW-Now">ESP-Now Gateway</a> 
 Clone in PlatformIO or download archive and extract main source folder to your Arduino projects folder.
 Libraries will be automatically fetched in PlatformIO, for Arduino check below for the needed libraries.
 
-# Libraries
-<a href="https://github.com/LowPowerLab/SI7021">Si7021 by Felix Rusu</a>
-
 # Setup
 Rename example_private.h to private.h and edit to you liking.
-
-# Plans
-- add more sensor types
 
 # Info
 Boards like NodeMCU and WeMos D1 can not measure ADC_VCC (their own voltage) because the ADC pin is connected to a voltage divider. To measure ADC_VCC the ADC pin must be floating like in ESP-01, ESP-07 and ESP-12 modules.
@@ -36,10 +30,16 @@ ESP-01 and ESP-01S do not have GPIO 16 available. To use them for deepsleep a sm
 Pictures are available in the project's hardware folder.
 
 # Message format
-ESPsensor send a message with the following format: <code>{"t":"sensor","n":"attic","ID":"abcdef","tmp":25.12,"hum":41.66","vin":3.30}</code>
+ESPsensor sends a message with the following format: <code>{"t":"sensor","n":"attic","ID":"abcdef","tmp":25.12,"hum":41.66","vin":3.30}</code>
 - t: device type. Value can be sensor, switch or anything else you define.
 - n: device name. Value can be room name or any other name you give to the device.
 - ID: ESPid, last 4 bytes of the ESP's mac address.
 - tmp: temperature reading
 - hum: humidity reading
 - vin: ESP voltage. Good until about 2.9V. Best to change batteries when voltage falls below 3.00V
+
+# Libraries
+<a href="https://github.com/LowPowerLab/SI7021">Si7021 by Felix Rusu</a>
+
+# Plans
+- add more sensor types
