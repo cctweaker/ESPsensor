@@ -25,10 +25,11 @@ uint8_t gmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 //
 uint8_t smac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEE}; // sensors
 uint8_t bmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEF}; // buttons/switches
-uint8_t bmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF0}; // future devices
-uint8_t bmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF1}; // future devices
-// ESP-GW loads 4 mac addresses following its own mac
-// ESP-Now allows up to 6 mac addresses in encrypted mode
+uint8_t dmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF0}; // door switches
+uint8_t wmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF1}; // window switches
+uint8_t mmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF2}; // movement detectors, light barriers
+// ESP-GW can load up to 6 mac addresses following its own mac
+// ESP-Now protocol allows up to 6 mac addresses in encrypted mode
 /////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
@@ -40,13 +41,13 @@ uint8_t kok[16] = {0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0
 uint8_t key[16] = {0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED};
 /////////////////////////////////////////////////
 
-
 /////////////////////////////////////////////////
 // TIP will be sent in json message
 /////////////////////////////////////////////////
 #define TIP "sensor" // sensor
 // #define TIP "switch" // light switch
-// #define TIP "gw"      // gateway MQTT
+// #define TIP "door"   // door switch
+// #define TIP "window" // window switch
 /////////////////////////////////////////////////
 
 /////////////////////////////////////////////////

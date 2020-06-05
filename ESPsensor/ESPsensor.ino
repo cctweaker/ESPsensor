@@ -17,7 +17,11 @@ SI7021 sensor;
 void initVariant()
 {
   WiFi.mode(WIFI_AP);
-  wifi_set_macaddr(SOFTAP_IF, smac);
+  wifi_set_macaddr(SOFTAP_IF, smac); // sensors
+  // wifi_set_macaddr(SOFTAP_IF, bmac); // buttons / switches
+  // wifi_set_macaddr(SOFTAP_IF, dmac); // doors
+  // wifi_set_macaddr(SOFTAP_IF, wmac); // windows
+  // wifi_set_macaddr(SOFTAP_IF, mmac); // movement
 }
 
 void setup()
