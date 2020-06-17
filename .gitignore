@@ -1,4 +1,5 @@
 private.h
+test.h
 .cache/*
 .pio/*
 .pioenvs/*

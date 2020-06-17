@@ -7,7 +7,6 @@ extern "C"
 }
 
 #include "private.h"
-#include "variables.h"
 
 #include <Wire.h>
 #include <SI7021.h>
@@ -17,16 +16,15 @@ SI7021 sensor;
 void initVariant()
 {
   WiFi.mode(WIFI_AP);
-  wifi_set_macaddr(SOFTAP_IF, smac); // sensors
-  // wifi_set_macaddr(SOFTAP_IF, bmac); // buttons / switches
-  // wifi_set_macaddr(SOFTAP_IF, dmac); // doors
-  // wifi_set_macaddr(SOFTAP_IF, wmac); // windows
-  // wifi_set_macaddr(SOFTAP_IF, mmac); // movement
+  wifi_set_macaddr(SOFTAP_IF, smac);
+
+  WiFi.softAP(HOSTNAME, PASSWORD, WIFI_CHANNEL, HIDE_AP);
 }
 
 void setup()
 {
   if (sensor.begin(2, 0))
+  // if (sensor.begin(0, 2))
     SI = true;
 
   if (esp_now_init() != 0)
@@ -36,7 +34,7 @@ void setup()
 
   esp_now_set_self_role(ESP_NOW_ROLE_COMBO);
 
-  esp_now_add_peer(gmac, ESP_NOW_ROLE_SLAVE, WIFI_CHANNEL, key, 16);
+  esp_now_add_peer(gmac, ESP_NOW_ROLE_COMBO, WIFI_CHANNEL, key, 16);
   esp_now_set_peer_key(gmac, key, 16);
 
   esp_now_register_send_cb(txcb);
@@ -72,7 +70,7 @@ void send_data()
   }
   vin = (float)ESP.getVcc() / FACTOR;
 
-  sprintf(tx, "{\"t\":\"%s\",\"n\":\"%s\",\"ID\":\"%x\",\"v\":%d,\"tmp\":%.2f,\"hum\":%.2f\",\"vin\":%.2f}", TIP, NAME, ESP.getChipId(), VERSION, tmp, hum, vin);
+  sprintf(tx, "{\"t\":\"%s\",\"n\":\"%s\",\"ID\":\"%x\",\"v\":%d,\"tmp\":%.2f,\"hum\":%.2f,\"vin\":%.2f}", TIP, NAME, ESP.getChipId(), VERSION, tmp, hum, vin);
 
   uint8_t byteArray[sizeof(tx)];
   memcpy(byteArray, &tx, sizeof(tx));
