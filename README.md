@@ -1,8 +1,12 @@
 # ESPsensor
 is covering a need for low power, cheap, battery operated sensors that you can place throughout your house.
-It is designed to use an ESP-01 / ESP-01S and a SI7021 temperature and humidity sensor.
+It is designed to use an ESP-01 / ESP-01S and a SI7021 temperature and humidity sensor. BME280 sensors are also supported and add air pressure readings (real and normalized).
 Communication is done through ESP-Now protocol to save a huge amount of power compared to regular WiFi.
 It needs a <a href="https://github.com/cctweaker/ESPGW-Now">ESP-Now Gateway</a> to receive its output.
+
+# Sensors supported
+- SI7021 for temperature, humidity and dew point
+- BME280 for temperature, humidity, dew point, pressure, normalized pressure
 
 # Features
 - perfect for infrequent small data transmissions
@@ -30,16 +34,20 @@ ESP-01 and ESP-01S do not have GPIO 16 available. To use them for deepsleep a sm
 Pictures are available in the project's hardware folder.
 
 # Message format
-ESPsensor sends a message with the following format: <code>{"t":"sensor","n":"attic","ID":"abcdef","tmp":25.12,"hum":41.66","vin":3.30}</code>
+ESPsensor sends a message with the following format: <code>{"t":"sensor","n":"attic","ID":"abcdef","tmp":27.02,"hum":54.74,"dew":17.14,"prs":998.08,"prn":1008.54,"vin":3.31}</code>
 - t: device type. Value can be sensor, switch or anything else you define.
 - n: device name. Value can be room name or any other name you give to the device.
 - ID: ESPid, last 4 bytes of the ESP's mac address.
 - tmp: temperature reading
 - hum: humidity reading
+- dew: dew point estimation
+- prs: air pressure reading (only for BME280 sensor)
+- prn: normalized (sea level) air pressure reading as reported in North America (only for BME280 sensor)
 - vin: ESP voltage. Good until about 2.9V. Best to change batteries when voltage falls below 3.00V
 
 # Libraries
 <a href="https://github.com/LowPowerLab/SI7021">Si7021 by Felix Rusu</a>
+<a href="https://github.com/zen/BME280_light">BME280_Light by zen</a>
 
 # Plans
 - add more sensor types
