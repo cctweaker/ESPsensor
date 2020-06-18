@@ -46,8 +46,7 @@ ESPsensor sends a message with the following format: <code>{"t":"sensor","n":"at
 - vin: ESP voltage. Good until about 2.9V. Best to change batteries when voltage falls below 3.00V
 
 # Libraries
-<a href="https://github.com/LowPowerLab/SI7021">Si7021 by Felix Rusu</a>
-<br>
+<a href="https://github.com/LowPowerLab/SI7021">Si7021 by Felix Rusu</a><br>
 <a href="https://github.com/zen/BME280_light">BME280_Light by zen</a>
 
 # Plans
