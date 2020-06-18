@@ -84,6 +84,7 @@ uint8_t key[16] = {0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0
 // sleep time (message rate)
 /////////////////////////////////////////////////
 #define SLEEP 10 * 60 * 1000 * 1000 // 1 minute
+//            min  sec  msec   usec
 /////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
@@ -101,7 +102,23 @@ uint8_t key[16] = {0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0
 /////////////////////////////////////////////////
 // flags
 /////////////////////////////////////////////////
+bool PREP = false; // prepare data flag
 bool SENT = false; // data sent flag
 bool ACK = false;  // data sent ok flag
 bool SI = false;   // SI7021 present
+bool BME = false;  // BME280 present
+bool DS = false;   // DS18B20 present
+/////////////////////////////////////////////////
+
+char tx[128];
+
+/////////////////////////////////////////////////
+// BME280
+/////////////////////////////////////////////////
+// input your correct sensor altitude in meters
+#define MYALTITUDE 100 // altitude in meters
+// this value is needed for correct normalized
+// pressure value (USA & Canada)
+//
+// OpenWeatherMap reports normalized pres. for Europe
 /////////////////////////////////////////////////

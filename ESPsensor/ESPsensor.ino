@@ -10,8 +10,10 @@ extern "C"
 
 #include <Wire.h>
 #include <SI7021.h>
+#include <BME280_t.h>
 
 SI7021 sensor;
+BME280<> BMESensor;
 
 void initVariant()
 {
@@ -23,26 +25,15 @@ void initVariant()
 
 void setup()
 {
-  if (sensor.begin(2, 0))
-  // if (sensor.begin(0, 2))
-    SI = true;
-
-  if (esp_now_init() != 0)
-    goto_sleep();
-
-  esp_now_set_kok(kok, 16);
-
-  esp_now_set_self_role(ESP_NOW_ROLE_COMBO);
-
-  esp_now_add_peer(gmac, ESP_NOW_ROLE_COMBO, WIFI_CHANNEL, key, 16);
-  esp_now_set_peer_key(gmac, key, 16);
-
-  esp_now_register_send_cb(txcb);
-  esp_now_register_recv_cb(rxcb);
+  init_espnow();
+  init_sensors();
 }
 
 void loop()
 {
+  if (!PREP)
+    prepare_data();
+
   if (!SENT)
     send_data();
 
@@ -53,41 +44,12 @@ void loop()
     goto_sleep();
 }
 
-void send_data()
-{
-  char tx[128];
-
-  float tmp = 0;
-  float hum = 0;
-  float vin = 0;
-
-  if (SI)
-  {
-    si7021_env data = sensor.getHumidityAndTemperature();
-
-    tmp = (float)data.celsiusHundredths / 100;
-    hum = (float)data.humidityBasisPoints / 100;
-  }
-  vin = (float)ESP.getVcc() / FACTOR;
-
-  sprintf(tx, "{\"t\":\"%s\",\"n\":\"%s\",\"ID\":\"%x\",\"v\":%d,\"tmp\":%.2f,\"hum\":%.2f,\"vin\":%.2f}", TIP, NAME, ESP.getChipId(), VERSION, tmp, hum, vin);
-
-  uint8_t byteArray[sizeof(tx)];
-  memcpy(byteArray, &tx, sizeof(tx));
-  esp_now_send(gmac, byteArray, sizeof(tx));
-
-  SENT = true;
-}
-
-void txcb(uint8_t *mac, uint8_t sendStatus)
-{
-  if (sendStatus == 0)
-    ACK = true;
-}
-
-void rxcb(uint8_t *senderMac, uint8_t *incomingData, uint8_t len) {}
-
 void goto_sleep()
 {
   ESP.deepSleepInstant(SLEEP, RF_NO_CAL);
+}
+
+void goto_sleep_short()
+{
+  ESP.deepSleepInstant(60 * 1000 * 1000, RF_NO_CAL);
 }
