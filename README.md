@@ -10,8 +10,8 @@ It needs a <a href="https://github.com/cctweaker/ESPGW-Now">ESP-Now Gateway</a> 
 
 # Features
 - perfect for infrequent small data transmissions
-- no need for full blown WiFi, connects and transmits data instantly
-- much faster than other solutions that rely on Wifi
+- no need for full blown WiFi, connects and transmits data instantly (50 - 100ms on time)
+- much faster than other solutions that rely on Wifi (secure MQTT takes about 15-20 seconds)
 - much faster trasnfer speed compared to other 2.4GHz protocols
 - lower total power consumption, great for battery operated sensors/buttons
 - uses a parallel network for IoT without hoarding your DHCP leases in WiFi (just the gateway is connected)
