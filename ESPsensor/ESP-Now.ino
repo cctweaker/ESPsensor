@@ -14,6 +14,8 @@ void init_espnow()
     esp_now_register_recv_cb(rxcb);
 }
 
+//
+
 void send_data()
 {
     uint8_t byteArray[sizeof(tx)];
@@ -23,10 +25,14 @@ void send_data()
     SENT = true;
 }
 
+//
+
 void txcb(uint8_t *mac, uint8_t sendStatus)
 {
     if (sendStatus == 0)
         ACK = true;
 }
+
+//
 
 void rxcb(uint8_t *senderMac, uint8_t *incomingData, uint8_t len) {}

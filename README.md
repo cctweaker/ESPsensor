@@ -29,21 +29,27 @@ Boards like NodeMCU and WeMos D1 can not measure ADC_VCC (their own voltage) bec
 # Hardware
 Roll your own based on the schematics inside hardware folder or get the PCB (with or without components) from <a href="https://3dstar.ro/proiecte/espsensor">3DStar.ro ESPsensor PCBs</a>
 
+
 # Deep Sleep Mod
 ESP-01 and ESP-01S do not have GPIO 16 available. To use them for deepsleep a small mod is necessary. GPIO 16 is nicely exposed on the bottom-left side of the ESP8266 chip. All we need to do is bridge it with a wire to RESET pin.
 Pictures are available in the project's hardware folder.
 
 # Message format
-ESPsensor sends a message with the following format: <code>{"t":"sensor","n":"attic","ID":"abcdef","tmp":27.02,"hum":54.74,"dew":17.14,"prs":998.08,"prn":1008.54,"vin":3.31}</code>
-- t: device type. Value can be sensor, switch or anything else you define.
-- n: device name. Value can be room name or any other name you give to the device.
-- ID: ESPid, last 4 bytes of the ESP's mac address.
+ESPsensor sends a message with the following format: <code>{"t":"ESPsensor","v":2.01,"ID":"abcdef","tmp":27.02,"hum":54.74,"dew":17.14,"prs":998.08,"prn":1008.54,"vin":3.31}</code>
+- t: device type, value can be sensor, switch or anything else, depending on firmware
+- v: firmware version
+- ID: ESPid, last 3 bytes of the ESP's mac address in hex format, unique per ESP chip
 - tmp: temperature reading
 - hum: humidity reading
 - dew: dew point estimation
 - prs: air pressure reading (only for BME280 sensor)
 - prn: normalized (sea level) air pressure reading as reported in North America (only for BME280 sensor)
-- vin: ESP voltage. Good until about 2.9V. Best to change batteries when voltage falls below 3.00V
+- vin: raw value of ESP voltage
+
+# Raw voltage
+To show correct ESP voltage, measure voltage after the regulator (should be 3.29 - 3.31) and calculate the correction factor.
+F = vin/measured voltage
+F should be between 1024 - 1086. Apply the correction in NodeRed for example. Works just fine until about 2.9V. Best to change/charge batteries when voltage falls below 3.00V.
 
 # Libraries
 <a href="https://github.com/LowPowerLab/SI7021">Si7021 by Felix Rusu</a><br>

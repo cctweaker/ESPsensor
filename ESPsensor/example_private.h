@@ -1,9 +1,27 @@
 /////////////////////////////////////////////////
-// rename this file to private.h before building
-// and change the values to your liking
+// Firmware specific
+/////////////////////////////////////////////////
+#define FWN "ESPsensor"
 /////////////////////////////////////////////////
 
+//
+
+//
+// rename this file to private.h before building
+// and change the values BELOW this text to your liking
+//
+
+//
+
 /////////////////////////////////////////////////
+// select sensor type
+/////////////////////////////////////////////////
+// to reduce power consumption to the maximum
+// it is better to have the firmware expect
+// the correct sensor
+// uncomment one of the below options
+#define SENSOR_SI7021
+// #define SENSOR_BME280
 /////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
@@ -17,18 +35,23 @@
 // xA-xx-xx-xx-xx-xx
 // xE-xx-xx-xx-xx-xx
 uint8_t gmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-// using a custom mac will allow you to change the ESP on the gateway without changing the programming on all sensors and buttons
+// using a custom mac will allow you to change the ESP on the gateway without changing
+// the programming on all ESP-Now devices
 // hardware mac address assigned to the ESP is unchanged, just not used in this case
-// make sure to use the same gateway mac address in all projects!
+// make sure to use the same gateway mac address in all your projects!
 //
-uint8_t smac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEE}; // sensors
-// uint8_t bmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEF}; // buttons/switches
-// uint8_t dmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF0}; // door switches
-// uint8_t wmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF1}; // window switches
-// uint8_t mmac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF2}; // movement detectors, light barriers
-// ESP-GW can load up to 6 mac addresses following its own mac
+uint8_t mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEE}; // sensors
+// uint8_t mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEF}; // buttons/switches
+// uint8_t mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF0}; // door switches
+// uint8_t mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF1}; // window switches
+// uint8_t mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xF2}; // movement detectors, light barriers
+// ESP-GW project reserves up to 6 mac addresses following its own mac
 // ESP-Now protocol allows up to 6 mac addresses in encrypted mode
+// to circumvent this limitation, a single mac address is assigned to multiple
+// sensors of the same type
 /////////////////////////////////////////////////
+
+//
 
 /////////////////////////////////////////////////
 // KEYS, make sure they are the same for ESPGW-NOW!
@@ -39,25 +62,7 @@ uint8_t kok[16] = {0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0
 uint8_t key[16] = {0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED};
 /////////////////////////////////////////////////
 
-/////////////////////////////////////////////////
-// TIP will be sent in json message
-/////////////////////////////////////////////////
-#define TIP "sensor" // sensor
-// #define TIP "switch"   // light switch
-// #define TIP "door"     // door switch
-// #define TIP "window"   // window switch
-// #define TIP "movement" // presence detectors, light barriers, etc
-/////////////////////////////////////////////////
-
-/////////////////////////////////////////////////
-// NAME will be sent in json message
-/////////////////////////////////////////////////
-#define NAME "attic"
-// #define NAME "kitchen"
-// #define NAME "gameroom"
-// #define NAME "basement"
-// #define NAME "stairs"
-/////////////////////////////////////////////////
+//
 
 /////////////////////////////////////////////////
 // AP settings for this unit
@@ -67,37 +72,37 @@ uint8_t key[16] = {0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0
 /////////////////////////////////////////////////
 // select the channel that your ESP-Now gateway uses
 // must be same as your ESP-Now gateway!!!
+// 1-13 are valid choices
 #define WIFI_CHANNEL 1
 /////////////////////////////////////////////////
-// HOSTNAME is used as AP name
-// necessary to correctly set up the WIFI channel
-#define HOSTNAME TIP "_" NAME
-/////////////////////////////////////////////////
 // PASSWORD is given just so no one will try to connect
+// if HIDE_AP is 0
+// device is powered for about 200 ms, maybe these precautions
+// are overkill
 #define PASSWORD "password"
 /////////////////////////////////////////////////
-// AP is hidden
+// AP is hidden?
+// 0 = visible
+// 1 = hidden
 #define HIDE_AP 1
 /////////////////////////////////////////////////
+
+//
 
 /////////////////////////////////////////////////
 // sleep time (message rate)
 /////////////////////////////////////////////////
-#define SLEEP 10 * 60 * 1000 * 1000 // 1 minute
 //            min  sec  msec   usec
+#define SLEEP 10 * 60 * 1000 * 1000 // 10 minutes
+// #define SLEEP  5 * 60 * 1000 * 1000 // 5 minutes
+// #define SLEEP  2 * 60 * 1000 * 1000 // 2 minutes
+// #define SLEEP  1 * 60 * 1000 * 1000 // 1 minute
+// #define SLEEP  1 * 30 * 1000 * 1000 // 30 seconds
+// estimate your power consumption here:
+// https://3dstar.ro/calculator-consum-baterii-acumulatori
 /////////////////////////////////////////////////
 
-/////////////////////////////////////////////////
-// measure your ESP VCC voltage with a good multimeter
-// should be around 3.30V
-#define MEASURED 3.27
-// enter the ESP reported voltage
-// this will fluctuate from ESP to ESP
-// i've seen up to 3.39V reported
-#define REPORTED 3.42
-#define FACTOR 1024 * MEASURED / REPORTED
-// use MQTT to send yourself a reminder to change/recharge batteries when voltage drops below 3.0-2.9V
-/////////////////////////////////////////////////
+//
 
 /////////////////////////////////////////////////
 // flags
@@ -107,7 +112,8 @@ bool SENT = false; // data sent flag
 bool ACK = false;  // data sent ok flag
 bool SI = false;   // SI7021 present
 bool BME = false;  // BME280 present
-bool DS = false;   // DS18B20 present
+bool DS = false;   // DS18B20 present (not yet implemented)
+// DS18B20 seems too slow, no promises that it will be implemented
 /////////////////////////////////////////////////
 
 char tx[128];
@@ -120,5 +126,6 @@ char tx[128];
 // this value is needed for correct normalized
 // pressure value (USA & Canada)
 //
-// OpenWeatherMap reports normalized pres. for Europe
+// Info:
+// OpenWeatherMap reports normalized pres. also for Europe
 /////////////////////////////////////////////////
