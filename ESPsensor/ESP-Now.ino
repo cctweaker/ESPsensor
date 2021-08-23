@@ -29,10 +29,13 @@ void send_data()
 
 void txcb(uint8_t *mac, uint8_t sendStatus)
 {
-    if (sendStatus == 0)
-        ACK = true;
+    //     if (sendStatus == 0)
+    ACK = true;
 }
 
 //
 
-void rxcb(uint8_t *senderMac, uint8_t *incomingData, uint8_t len) {}
+void rxcb(uint8_t *senderMac, uint8_t *incomingData, uint8_t len)
+{
+    ACK = true;
+}

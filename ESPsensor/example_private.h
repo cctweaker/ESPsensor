@@ -1,4 +1,11 @@
 /////////////////////////////////////////////////
+// edit this file before building
+// change the values BELOW this text to your liking
+/////////////////////////////////////////////////
+
+//
+
+/////////////////////////////////////////////////
 // Firmware specific
 /////////////////////////////////////////////////
 #define FWN "ESPsensor"
@@ -6,12 +13,6 @@
 
 //
 
-//
-// rename this file to private.h before building
-// and change the values BELOW this text to your liking
-//
-
-//
 
 /////////////////////////////////////////////////
 // select sensor type
@@ -20,9 +21,12 @@
 // it is better to have the firmware expect
 // the correct sensor
 // uncomment one of the below options
-#define SENSOR_SI7021
-// #define SENSOR_BME280
+//  #define SENSOR_SI7021
+#define SENSOR_BME280
+// #define SENSOR_DS1820
 /////////////////////////////////////////////////
+
+//
 
 /////////////////////////////////////////////////
 // private MAC addresses
@@ -59,7 +63,7 @@ uint8_t mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEE}; // sensors
 // pick 16 random numbers to use as device key encoding key
 uint8_t kok[16] = {0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF};
 // pick 16 random numbers to use as device key
-uint8_t key[16] = {0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED};
+uint8_t key[16] = {0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD, 0xBE, 0xEF, 0xDE, 0xAD};
 /////////////////////////////////////////////////
 
 //
@@ -93,11 +97,12 @@ uint8_t key[16] = {0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0xFE, 0xED, 0
 // sleep time (message rate)
 /////////////////////////////////////////////////
 //            min  sec  msec   usec
-#define SLEEP 10 * 60 * 1000 * 1000 // 10 minutes
+// #define SLEEP 10 * 60 * 1000 * 1000 // 10 minutes
 // #define SLEEP  5 * 60 * 1000 * 1000 // 5 minutes
-// #define SLEEP  2 * 60 * 1000 * 1000 // 2 minutes
+#define SLEEP  2 * 60 * 1000 * 1000 // 2 minutes
 // #define SLEEP  1 * 60 * 1000 * 1000 // 1 minute
 // #define SLEEP  1 * 30 * 1000 * 1000 // 30 seconds
+// #define SLEEP  1 * 10 * 1000 * 1000 // 10 seconds
 // estimate your power consumption here:
 // https://3dstar.ro/calculator-consum-baterii-acumulatori
 /////////////////////////////////////////////////
@@ -122,7 +127,7 @@ char tx[128];
 // BME280
 /////////////////////////////////////////////////
 // input your correct sensor altitude in meters
-#define MYALTITUDE 100 // altitude in meters
+#define MYALTITUDE 50 // altitude in meters
 // this value is needed for correct normalized
 // pressure value (USA & Canada)
 //

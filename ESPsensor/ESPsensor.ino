@@ -6,7 +6,7 @@ extern "C"
 #include <user_interface.h>
 }
 #include <Wire.h>
-#include "private.h"
+#include "example_private.h"
 
 //
 
@@ -20,6 +20,12 @@ SI7021 sensor;
 #ifdef SENSOR_BME280
 #include <BME280_t.h>
 BME280<> BMESensor;
+#endif
+
+//
+
+#ifdef SENSOR_DS1820
+// todo
 #endif
 
 //
@@ -54,8 +60,15 @@ void loop()
     send_data();
 
   if (ACK)
-    ESP.deepSleepInstant(SLEEP, RF_NO_CAL);
+    goto_sleep();
 
-  if (millis() > 1000) // sleep if data not sent in 1 second
-    ESP.deepSleepInstant(SLEEP, RF_NO_CAL);
+  if (millis() > 600) // sleep if data not yet sent/acknowledged
+    goto_sleep();
+}
+
+//
+
+void goto_sleep()
+{
+  ESP.deepSleepInstant(SLEEP, RF_NO_CAL);
 }
